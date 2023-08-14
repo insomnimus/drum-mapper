@@ -1,0 +1,23 @@
+[package]
+name = "nih_plug_egui"
+version = "0.0.0"
+edition = "2021"
+authors = ["Robbert van der Helm <mail@robbertvanderhelm.nl>"]
+license = "ISC"
+
+description = "An adapter to use egui GUIs with NIH-plug"
+
+[dependencies]
+baseview = { git = "https://github.com/RustAudio/baseview.git", rev = "1d9806d5bd92275d0d8142d9c9c90198757b9b25", features = ["opengl"] }
+crossbeam = "0.8"
+egui = { version = "0.22.0", features = ["accesskit"] }
+egui-baseview = { git = "https://github.com/BillyDM/egui-baseview.git", rev = "27c027c" }
+lazy_static = "1.4"
+parking_lot = "0.12"
+# To make the state persistable
+serde = { version = "1.0", features = ["derive"] }
+
+[dependencies.nih_plug]
+git = "https://github.com/robbert-vdh/nih-plug"
+rev = "3ccaced"
+# features = ["vst3"]

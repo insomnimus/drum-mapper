@@ -1,0 +1,13 @@
+[package]
+name = "drum-mapper-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "drum-mapper"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.72"
+clap = { version = "4.3.19", features = ["derive"] }
+midly = { version = "0.5.3", default-features = false, features = ["std"] }

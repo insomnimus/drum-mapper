@@ -38,7 +38,7 @@ impl Default for Parameters {
 	fn default() -> Self {
 		Self {
 			#[cfg(feature = "gui")]
-			gui_state: EguiState::from_size(120, 80),
+			gui_state: EguiState::from_size(750, 250),
 			from: EnumParam::new("from", Library::DEFAULT),
 			to: EnumParam::new("to", Library::DEFAULT),
 			ch: EnumParam::new("channel", Channel::All),
@@ -145,31 +145,33 @@ impl Plugin for DrumMapper {
 			(),
 			|_, _| {},
 			move |egui_ctx, setter, _state| {
+				egui_ctx.enable_accesskit();
+				// egui_ctx.accesskit_node_builder(egui::accesskit_root_id())
 				let mut ch = params.ch.value();
 				let mut from = params.from.value();
 				let mut to = params.to.value();
 
 				egui::CentralPanel::default().show(egui_ctx, |ui| {
 					// From Selection
-					ui.vertical(|ui| {
+					ui.horizontal(|ui| {
 						ui.label("From");
 						for (name, value) in Library::values() {
-							ui.selectable_value(&mut from, value, name);
+							ui.radio_value(&mut from, value, name);
 						}
 					});
 
 					// To selection
-					ui.vertical(|ui| {
+					ui.horizontal(|ui| {
 						ui.label("To");
 						for (name, value) in Library::values() {
-							ui.selectable_value(&mut to, value, name);
+							ui.radio_value(&mut to, value, name);
 						}
 					});
 					// Channel selection
-					ui.vertical(|ui| {
+					ui.horizontal(|ui| {
 						ui.label("Channel");
 						for (name, value) in Channel::VALUES {
-							ui.selectable_value(&mut ch, value, name);
+							ui.radio_value(&mut ch, value, name);
 						}
 					});
 

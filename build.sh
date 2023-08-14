@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-cargo run -q --bin bundler bundle drum-mapper --release "$@"
+cargo run -q --bin bundler bundle drum-mapper "$@"

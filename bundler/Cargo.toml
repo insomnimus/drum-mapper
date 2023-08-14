@@ -1,0 +1,8 @@
+[package]
+name = "bundler"
+version = "0.1.0"
+edition = "2021"
+license = "ISC"
+
+[dependencies]
+nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "3ccaced" }

@@ -145,7 +145,7 @@ impl Plugin for DrumMapper {
 			(),
 			|_, _| {},
 			move |egui_ctx, setter, _state| {
-				egui_ctx.enable_accesskit();
+				// egui_ctx.enable_accesskit();
 				// egui_ctx.accesskit_node_builder(egui::accesskit_root_id())
 				let mut ch = params.ch.value();
 				let mut from = params.from.value();

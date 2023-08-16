@@ -24,8 +24,12 @@ impl Mapping {
 		};
 
 		let mut map = BTreeMap::new();
-		for (i, s) in data.lines().enumerate().filter(|t| !t.1.trim().is_empty()) {
-			let Some((gm, to)) = s.split_once(" -> ") else {
+		for (i, s) in data
+			.lines()
+			.enumerate()
+			.filter(|t| !t.1.trim().is_empty() && !t.1.trim_start().starts_with('#'))
+		{
+			let Some((gm, to)) = s.split_once("->") else {
 				panic!(
 					"the file {} contains an invalid line at line {}: {}",
 					p.display(),
@@ -34,7 +38,7 @@ impl Mapping {
 				);
 			};
 
-			let Ok(gm) = gm.parse::<u8>() else {
+			let Ok(gm) = gm.trim().parse::<u8>() else {
 				panic!(
 					"the file {} contains an invalid line at line {}: {}",
 					p.display(),
@@ -42,7 +46,7 @@ impl Mapping {
 					s
 				);
 			};
-			let Ok(to) = to.parse::<u8>() else {
+			let Ok(to) = to.trim().parse::<u8>() else {
 				panic!(
 					"the file {} contains an invalid line at line {}: {}",
 					p.display(),

@@ -82,6 +82,7 @@ fn generate_sweep() -> Smf<'static> {
 
 #[derive(Parser)]
 /// Generate midi drum note mappings
+#[command(infer_subcommands = true, version, author)]
 enum Args {
 	Template(Template),
 	Generate(Generate),
@@ -268,16 +269,21 @@ impl Remap {
 fn parse_mapping(p: &str) -> Result<Mapping> {
 	let data = fs::read_to_string(p)?;
 	let mut map = BTreeMap::new();
-	for (i, s) in data.lines().enumerate().filter(|t| !t.1.trim().is_empty()) {
+	let filter = |&(_, s): &(usize, &str)| {
+		let s = s.trim();
+		!s.is_empty() && !s.starts_with('#')
+	};
+
+	for (i, s) in data.lines().enumerate().filter(filter) {
 		let (gm, to) =
-			s.split_once(" -> ").ok_or_else(|| {
+			s.split_once("->").ok_or_else(|| {
 				anyhow!("the file {p}, line {i}: invalid mapping (should be `note_number -> note_number`)")
 			})?;
 
-		let gm = gm.parse::<u8>().map_err(|_| {
+		let gm = gm.trim().parse::<u8>().map_err(|_| {
 			anyhow!("the file {p}, line {i}: invalid line: {gm} isn't a valid note number")
 		})?;
-		let to = to.parse::<u8>().map_err(|_| {
+		let to = to.trim().parse::<u8>().map_err(|_| {
 			anyhow!("the file {p}, line {i}: invalid line: {to} isn't a valid note number")
 		})?;
 		if gm > 127 {

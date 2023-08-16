@@ -11,6 +11,11 @@ pub struct Mapping {
 	pub from_gm: [u8; 128],
 }
 
+pub struct LibraryMapping {
+	pub notes: Mapping,
+	pub ccs: Mapping,
+}
+
 impl Library {
 	#[cfg(feature = "nih_plug")]
 	pub fn values() -> impl Iterator<Item = (&'static str, Self)> {

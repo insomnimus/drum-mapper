@@ -8,3 +8,10 @@ members = [
 	"bundler",
 	"print-notes",
 ]
+
+[profile.release]
+panic = "abort"
+lto = "thin"
+
+[profile.dev]
+opt-level = 1

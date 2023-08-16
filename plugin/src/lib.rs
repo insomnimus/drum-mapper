@@ -1,10 +1,11 @@
 #![allow(clippy::arc_with_non_send_sync)]
 
 mod channel;
-mod mappings;
+// mod mappings;
 
 use std::sync::Arc;
 
+use mappings::Library;
 use nih_plug::prelude::*;
 #[cfg(feature = "gui")]
 use nih_plug_egui::{
@@ -13,10 +14,7 @@ use nih_plug_egui::{
 	EguiState,
 };
 
-use self::{
-	channel::Channel,
-	mappings::Library,
-};
+use self::channel::Channel;
 
 nih_export_clap!(DrumMapper);
 nih_export_vst3!(DrumMapper);

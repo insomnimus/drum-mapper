@@ -60,6 +60,7 @@ impl Mapping {
 			map.insert(gm, to);
 		}
 
+		// This should be impossible
 		if map.len() > 128 {
 			panic!("the file {} contains more than 128 mappings", p.display());
 		}
@@ -86,17 +87,31 @@ impl Mapping {
 }
 
 fn to_rust(mappings: &[Mapping]) -> String {
+	let is_clap = cfg!(feature = "clap");
+	let is_nih = cfg!(feature = "nih_plug");
+
+	let mut en_header = String::with_capacity(64);
+
+	if is_clap {
+		en_header += "#[derive(ValueEnum)]\n";
+	}
+	if is_nih {
+		en_header += "#[derive(Enum)]\n";
+	}
+
 	let en = format!(
-		"#[derive(Copy, Clone, Eq, PartialEq, Debug, Enum)]\npub enum Library {{\n{}\n}}",
-		mappings
+		"#[derive(Copy, Clone, Eq, PartialEq, Debug)]\n{en_header}pub enum Library {{\n{variants}\n}}",
+		variants = mappings
 			.iter()
 			.fold(String::with_capacity(1024), |mut buf, m| {
+				if is_nih {
 				let _ = writeln!(
 					buf,
-					"#[name = {name:?}] #[id = {name:?}]\n{variant},",
+					"#[name = {name:?}] #[id = {name:?}]",
 					name = m.name,
-					variant = m.variant
 				);
+				}
+				let _ = writeln!(buf, "{},", m.variant);
 				buf
 			})
 	);
@@ -104,21 +119,22 @@ fn to_rust(mappings: &[Mapping]) -> String {
 	let impls = format!(
 		"impl Library {{
 	pub const DEFAULT: Self = Self::{default};
-	pub fn get_mapping(self) -> Mapping {{
+	pub fn get_mapping(self) -> &'static Mapping {{
 		match self {{
 			{match_body}
 		}}
 	}}
 
-	pub fn to(self, other: Self, note: u8) -> u8 {{
-		other.get_mapping().from_gm[self.get_mapping().to_gm[note as usize] as usize]
+	pub fn to(self, to: Self, note: u8) -> u8 {{
+		self.get_mapping().to(to.get_mapping(), note)
 	}}
-}}",
+}}
+",
 		default = &mappings[0].variant,
 		match_body = mappings
 			.iter()
 			.fold(String::with_capacity(1024), |mut buf, m| {
-				let _ = writeln!(buf, "Self::{} => {},", m.variant, m.ident);
+				let _ = writeln!(buf, "Self::{} => &{},", m.variant, m.ident);
 				buf
 			})
 	);
@@ -126,7 +142,7 @@ fn to_rust(mappings: &[Mapping]) -> String {
 	let idents =  mappings.iter().fold(
 		String::with_capacity(8 * 1024),
 		|mut buf, m| {
-			let _ = writeln!(buf, "static {ident}: Mapping = Mapping {{\nfrom_gm: &{from_gm:?},\nto_gm: &{to_gm:?},\n}};",
+			let _ = writeln!(buf, "static {ident}: Mapping = Mapping {{\nfrom_gm: {from_gm:?},\nto_gm: {to_gm:?},\n}};",
 			ident = m.ident,
 			to_gm = m.to_gm,
 			from_gm = m.from_gm,
@@ -135,21 +151,8 @@ fn to_rust(mappings: &[Mapping]) -> String {
 		}
 	);
 
-	// let default = format!(
-	// "impl Default for Library {{\nfn default() -> Self {{\nSelf::{}\n}}\n}}",
-	// &mappings[0].variant
-	// );
-
 	format!(
-		"use nih_plug::params::enums::Enum;
-
-#[derive(Copy, Clone)]
-pub struct Mapping {{
-	pub to_gm: &'static [u8; 128],
-	pub from_gm: &'static [u8; 128],
-}}
-
-{en}
+		"{en}
 {impls}
 {idents}\n"
 	)

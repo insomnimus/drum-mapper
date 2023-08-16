@@ -1,8 +1,10 @@
 [workspace]
 resolver = "2"
 members = [
+	"mappings",
 	"cli",
 	"plugin",
 	"nih_plug_egui",
 	"bundler",
+	"print-notes",
 ]

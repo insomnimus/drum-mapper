@@ -12,6 +12,7 @@ default = ["gui"]
 gui = ["nih_plug_egui"]
 
 [dependencies]
+mappings = { path = "../mappings", features = ["nih_plug"] }
 nih_plug_egui = { path = "../nih_plug_egui", optional = true }
 
 [dependencies.nih_plug]

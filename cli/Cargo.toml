@@ -8,6 +8,7 @@ name = "drum-mapper"
 path = "src/main.rs"
 
 [dependencies]
-anyhow = "1.0.72"
+anyhow = "1.0.*"
 clap = { version = "4.3.19", features = ["derive"] }
-midly = { version = "0.5.3", default-features = false, features = ["std"] }
+mappings = { path = "../mappings", features = ["clap"] }
+midly = "0.5.3"

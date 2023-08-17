@@ -1,0 +1,158 @@
+{
+  "name": "All",
+  "on": {
+    "push": {
+      "paths-ignore": [
+        "**.md",
+        "*.mid",
+        "LICENSE"
+      ]
+    },
+    "pull_request": {
+      "paths-ignore": [
+        "**.md",
+        "*.mid",
+        "LICENSE"
+      ]
+    }
+  },
+  "jobs": {
+    "test": {
+      "strategy": {
+        "matrix": {
+          "include": [
+            {
+              "os": "ubuntu-latest"
+            },
+            {
+              "os": "macOS-11"
+            },
+            {
+              "os": "windows-latest"
+            }
+          ]
+        }
+      },
+      "runs-on": "${{ matrix.os }}",
+      "steps": [
+        {
+          "name": "Setup | Checkout",
+          "uses": "actions/checkout@v3"
+        },
+        {
+          "name": "Prep | Dependencies",
+          "if": "matrix.os == 'ubuntu-latest'",
+          "run": "apt update && apt install -y libgl-dev libx11-dev libxcursor-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-xtest0-dev libxcb-xinerama0-dev libxcb-shape0-dev libxcb-xkb-dev xcb-dri2-0-dev libx11-xcb-dev"
+        },
+        {
+          "name": "Check | Tests",
+          "run": "cargo test -q --bin drum-mapper --lib drum-mapper"
+        }
+      ]
+    },
+    "build": {
+      "name": "Build Release Binaries",
+      "needs": "test",
+      "if": "github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')",
+      "continue-on-error": true,
+      "strategy": {
+        "fail-fast": false,
+        "matrix": {
+          "include": [
+            {
+              "name": "drum-mapper-x86_64-windows.zip",
+              "os": "windows-latest",
+              "target": "x86_64-pc-windows-msvc"
+            },
+            {
+              "name": "drum-mapper-x86_64-linux.tar.xz",
+              "os": "ubuntu-latest",
+              "target": "x86_64-unknown-linux-gnu"
+            },
+            {
+              "name": "drum-mapper-x86\u001f64-macos.tar.xz",
+              "os": "macos-latest",
+              "target": "x86_64-apple-darwin"
+            }
+          ]
+        }
+      },
+      "runs-on": "${{ matrix.os }}",
+      "steps": [
+        {
+          "name": "Setup | Checkout",
+          "uses": "actions/checkout@v3"
+        },
+        {
+          "name": "Prep | Dependencies",
+          "if": "matrix.os == 'ubuntu-latest'",
+          "run": "apt update && apt install -y libgl-dev libx11-dev libxcursor-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-xtest0-dev libxcb-xinerama0-dev libxcb-shape0-dev libxcb-xkb-dev xcb-dri2-0-dev libx11-xcb-dev"
+        },
+        {
+          "name": "Build | Plugin",
+          "run": "cargo run -q --bin bundler -- bundle drum-mapper -q --target ${{ matrix.target }} --release"
+        },
+        {
+          "name": "Build | CLI",
+          "run": "cargo build --bin drum-mapper -q --release --target ${{ matrix.target }}"
+        },
+        {
+          "name": "PostBuild | Prepare",
+          "if": "matrix.os != 'windows-latest'",
+          "run": "set -e; mkdir out; mv './target/${{ matrix.target }}/release/drum-mapper' LICENSE './target/bundled/Drum Mapper.clap' './target/bundled/Drum Mapper.vst3/Contents/'*'/Drum Mapper'.* ./out/; cd ./out; strip ./* || true; tar cJf ../${{ matrix.name }} ./*; cd .."
+        },
+        {
+          "name": "PostBuild | Prepare",
+          "if": "matrix.os == 'windows-latest'",
+          "run": "$ErrorActionPreference = 'stop'; mkdir out; mv LICENSE, target/${{ matrix.target }}/release/drum-mapper.exe, 'target/bundled/Drum Mapper.clap', 'target/bundled/Drum Mapper.vst3/Contents/x86_64-win/Drum Mapper.vst3' out/; cd out; 7z a ../${{ matrix.name }} *; cd .."
+        },
+        {
+          "name": "Deploy | Upload Artifacts",
+          "uses": "actions/upload-artifact@v3",
+          "with": {
+            "name": "${{ matrix.name }}",
+            "path": "${{ matrix.name }}"
+          }
+        }
+      ]
+    },
+    "release": {
+      "name": "Create GitHub Release",
+      "needs": "build",
+      "if": "github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')",
+      "runs-on": "ubuntu-latest",
+      "steps": [
+        {
+          "name": "Setup | Checkout",
+          "uses": "actions/checkout@v3",
+          "with": {
+            "fetch-depth": 0
+          }
+        },
+        {
+          "name": "Setup | go",
+          "uses": "actions/setup-go@v4",
+          "with": {
+            "go-version": "^1.15.7"
+          }
+        },
+        {
+          "name": "Setup | Artifacts",
+          "uses": "actions/download-artifact@v3"
+        },
+        {
+          "name": "Setup | Release notes",
+          "run": "GO111MODULE=on go install github.com/git-chglog/git-chglog/cmd/git-chglog@0.9.1\ngit-chglog -c .github/chglog/release.yml \"$(git describe --tags)\" > RELEASE.md"
+        },
+        {
+          "name": "Deploy | Publish",
+          "uses": "softprops/action-gh-release@v1",
+          "with": {
+            "files": "drum-mapper*/drum-mapper*",
+            "body_path": "RELEASE.md"
+          }
+        }
+      ]
+    }
+  }
+}

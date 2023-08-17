@@ -70,7 +70,7 @@
               "target": "x86_64-unknown-linux-gnu"
             },
             {
-              "name": "drum-mapper-x86\u001f64-macos.tar.xz",
+              "name": "drum-mapper-x86_64-macos.tar.xz",
               "os": "macos-latest",
               "target": "x86_64-apple-darwin"
             }

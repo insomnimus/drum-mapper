@@ -99,12 +99,13 @@
         {
           "name": "PostBuild | Prepare",
           "if": "matrix.os != 'windows-latest'",
-          "run": "set -e; mkdir out; mv './target/${{ matrix.target }}/release/drum-mapper' LICENSE './target/bundled/Drum Mapper.clap' './target/bundled/Drum Mapper.vst3/Contents/'*'/Drum Mapper'.* ./out/; cd ./out; strip ./* || true; tar cJf ../${{ matrix.name }} ./*; cd .."
+          "shell": "bash --noprofile --norc -eo globstar {0}",
+          "run": "mkdir out; mv './target/${{ matrix.target }}/release/drum-mapper' LICENSE ./target/bundled/* ./out/; cd ./out; strip ./**/* || true; tar cJf ../${{ matrix.name }} ./*; cd .."
         },
         {
           "name": "PostBuild | Prepare",
           "if": "matrix.os == 'windows-latest'",
-          "run": "$ErrorActionPreference = 'stop'; mkdir out; mv LICENSE, target/${{ matrix.target }}/release/drum-mapper.exe, 'target/bundled/Drum Mapper.clap', 'target/bundled/Drum Mapper.vst3/Contents/x86_64-win/Drum Mapper.vst3' out/; cd out; 7z a ../${{ matrix.name }} *; cd .."
+          "run": "$ErrorActionPreference = 'stop'; mkdir out; mv LICENSE, target/${{ matrix.target }}/release/drum-mapper.exe, target/bundled/* ./out/; cd out; 7z a ../${{ matrix.name }} *; cd .."
         },
         {
           "name": "Deploy | Upload Artifacts",

@@ -42,7 +42,7 @@
         {
           "name": "Prep | Dependencies",
           "if": "matrix.os == 'ubuntu-latest'",
-          "run": "apt update && apt install -y libgl-dev libx11-dev libxcursor-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-xtest0-dev libxcb-xinerama0-dev libxcb-shape0-dev libxcb-xkb-dev xcb-dri2-0-dev libx11-xcb-dev"
+          "run": "sudo apt-get update && sudo apt-get install -y libgl-dev libx11-dev libxcursor-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-xtest0-dev libxcb-xinerama0-dev libxcb-shape0-dev libxcb-xkb-dev xcb-dri2-0-dev libx11-xcb-dev"
         },
         {
           "name": "Check | Tests",
@@ -86,7 +86,7 @@
         {
           "name": "Prep | Dependencies",
           "if": "matrix.os == 'ubuntu-latest'",
-          "run": "apt update && apt install -y libgl-dev libx11-dev libxcursor-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-xtest0-dev libxcb-xinerama0-dev libxcb-shape0-dev libxcb-xkb-dev xcb-dri2-0-dev libx11-xcb-dev"
+          "run": "sudo apt-get update && sudo apt-get install -y libgl-dev libx11-dev libxcursor-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-xtest0-dev libxcb-xinerama0-dev libxcb-shape0-dev libxcb-xkb-dev xcb-dri2-0-dev libx11-xcb-dev"
         },
         {
           "name": "Build | Plugin",

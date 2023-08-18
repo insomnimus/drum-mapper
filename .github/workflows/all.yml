@@ -86,12 +86,13 @@
         },
         {
           "name": "Build | Plugin",
+          "env": { "RUSTFLAGS": "-Cstrip=debuginfo" },
           "run": "cargo run -q --bin bundler -- bundle drum-mapper -q --target ${{ matrix.target }} --release"
         },
         {
           "name": "Build | CLI",
           "env": {
-            "RUSTFLAGS": "-Cstrip=debuginfo"
+            "RUSTFLAGS": "-Cstrip=symbols -Ctarget-feature=+crt-static"
           },
           "run": "cargo build --bin drum-mapper -q --release --target ${{ matrix.target }}"
         },

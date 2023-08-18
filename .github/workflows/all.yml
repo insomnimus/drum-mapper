@@ -22,7 +22,11 @@
     "test": {
       "strategy": {
         "matrix": {
-          "os": ["windows-latest", "ubuntu-latest", "macos-latest"]
+          "os": [
+            "windows-latest",
+            "ubuntu-latest",
+            "macos-latest"
+          ]
         }
       },
       "runs-on": "${{ matrix.os }}",
@@ -86,7 +90,9 @@
         },
         {
           "name": "Build | CLI",
-          "env": { "RUSTFLAGS": "-Cstrip=debuginfo" },
+          "env": {
+            "RUSTFLAGS": "-Cstrip=debuginfo"
+          },
           "run": "cargo build --bin drum-mapper -q --release --target ${{ matrix.target }}"
         },
         {
@@ -125,14 +131,17 @@
         },
         {
           "name": "Setup | Artifacts",
-          "uses": "actions/download-artifact@v3"
+          "uses": "actions/download-artifact@v3",
+          "with": {
+            "path": "artifacts"
+          }
         },
         {
-          "name": "Deploy | Publish",
-          "uses": "softprops/action-gh-release@v1",
-          "with": {
-            "files": "drum-mapper*/drum-mapper*"
-          }
+          "name": "Release | Release",
+          "env": {
+            "GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
+          },
+          "run": "gh release create ${{ github.ref_name }} ./artifacts/*/* --generate-notes --title ${{ github.ref_name }} "
         }
       ]
     }

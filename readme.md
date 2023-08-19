@@ -15,7 +15,15 @@ Trademark and copyright notice: These are 3rd party libraries. This project and 
 
 You can embed your own mappings into the plugin/tool; instructions are given below.
 
-## Building
+## Installation
+1. Download the archive per your operating system from [the releases page](https://github.com/insomnimus/drum-mapper/releases).
+2. Extract the archive to some directory. It will contain 3 files/folders:
+	- `drum-mapper` (`drum-mapper.exe` on windows): This is the command line tool. You can move it anywhere you'd like.
+	- `Drum Mapper.vst3`: This is a directory and it's meant to be treated as a whole per VST3 specification. Move this directory into somewhere in your VST plugin path.
+	- `Drum Mapper.clap`: This is a File on Linux and Windows, a directory on MacOS. Move it whole into your Clap plugin path.
+3. Rescan your plugins on your DAW. The plugins will appear under the vendor "Insomnia".
+
+## Building From Source
 Requirements:
 - An up to date rust toolchain.
 

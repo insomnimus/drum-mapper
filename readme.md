@@ -75,7 +75,7 @@ Do you use an external converter and want to integrate it into the plugin? Follo
 1. First build the CLI tool as described above.
 2. Generate a dummy MIDI file:
 	`drum-mapper template -o dummy.mid`
-3. Convert the generated `drummy.mid` with your external converter of choice.
+3. Convert the generated `dummy.mid` with your external converter of choice.
 4. Assuming the converted file is called `converted.mid`, run:
 	`drum-mapper generate converted.mid -o "Foo Drums.txt"`
 5. If the converter didn't add noise to the file, the above command should finish without any message.

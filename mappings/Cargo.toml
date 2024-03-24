@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.3.21", features = ["derive"], optional = true }
+clap = { version = "4.5.3", features = ["derive"], optional = true }
 
 [dependencies.nih_plug]
 git = "https://github.com/robbert-vdh/nih-plug"

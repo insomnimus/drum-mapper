@@ -12,6 +12,7 @@ members = [
 [profile.release]
 panic = "abort"
 lto = "thin"
+strip = "debuginfo"
 
 [profile.dev]
 opt-level = 1

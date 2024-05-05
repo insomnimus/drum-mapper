@@ -4,12 +4,13 @@ members = [
 	"mappings",
 	"cli",
 	"plugin",
-	"nih_plug_egui",
+#	"nih_plug_egui",
 	"bundler",
 	"print-notes",
 ]
 
 [profile.release]
+opt-level = 2
 panic = "abort"
 lto = "thin"
 strip = "debuginfo"

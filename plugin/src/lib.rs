@@ -6,6 +6,7 @@ use std::sync::Arc;
 
 use mappings::Library;
 use nih_plug::prelude::*;
+// use nih_plug_derive::{Enum};
 #[cfg(feature = "gui")]
 use nih_plug_egui::{
 	create_egui_editor,

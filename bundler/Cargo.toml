@@ -2,7 +2,7 @@
 name = "bundler"
 version = "0.1.0"
 edition = "2021"
-license = "ISC"
+license = "MIT"
 
 [dependencies]
-nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "3ccaced" }
+nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "442d54b" }

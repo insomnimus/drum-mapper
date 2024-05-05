@@ -1,6 +1,6 @@
 [package]
 name = "drum-mapper"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 
 [lib]
@@ -9,13 +9,14 @@ crate-type = ["cdylib"]
 [features]
 default = ["gui"]
 # Enables a graphical user interface
-gui = ["nih_plug_egui"]
+gui = ["dep:nih_plug_egui"]
 
 [dependencies]
 mappings = { path = "../mappings", features = ["nih_plug"] }
-nih_plug_egui = { path = "../nih_plug_egui", optional = true }
+# nih_plug_egui = { path = "../nih_plug_egui", optional = true }
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", rev = "d270d12", optional = true }
 
 [dependencies.nih_plug]
 git = "https://github.com/robbert-vdh/nih-plug"
-rev = "3ccaced"
+rev = "d270d12"
 features = ["vst3"]

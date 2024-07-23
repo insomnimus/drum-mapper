@@ -13,10 +13,5 @@ gui = ["dep:nih_plug_egui"]
 
 [dependencies]
 mappings = { path = "../mappings", features = ["nih_plug"] }
-# nih_plug_egui = { path = "../nih_plug_egui", optional = true }
-nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", rev = "d270d12", optional = true }
-
-[dependencies.nih_plug]
-git = "https://github.com/robbert-vdh/nih-plug"
-rev = "d270d12"
-features = ["vst3"]
+nih_plug_egui = { workspace = true, optional = true }
+nih_plug = { workspace = true }

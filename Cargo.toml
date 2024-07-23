@@ -17,3 +17,8 @@ strip = "debuginfo"
 
 [profile.dev]
 opt-level = 1
+
+[workspace.dependencies]
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug", rev = "ffe9b61", features = ["vst3"] }
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", rev = "ffe9b61" }
+nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "ffe9b61" }

@@ -4,10 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.5.4", features = ["derive"], optional = true }
-
-[dependencies.nih_plug]
-git = "https://github.com/robbert-vdh/nih-plug"
-rev = "d270d12"
-features = ["vst3"]
-optional = true
+clap = { version = "4.5.9", features = ["derive"], optional = true }
+nih_plug = { workspace = true, optional = true }

@@ -5,4 +5,4 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "442d54b" }
+nih_plug_xtask = { workspace = true }

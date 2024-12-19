@@ -69,9 +69,13 @@ impl Mapping {
 			panic!("the file {} contains more than 128 mappings", p.display());
 		}
 
+		let chars = [
+			' ', '-', '+', '(', ')', '[', ']', '{', '}', '.', ',', '=', '!',
+		];
+
 		let name = p.file_stem().unwrap().to_str().unwrap().to_string();
-		let variant = name.replace(' ', "");
-		let ident = name.replace(' ', "_").to_uppercase();
+		let variant = name.replace(chars, "");
+		let ident = name.replace(chars, "_").to_uppercase();
 
 		let from_gm = (0..=127)
 			.map(|gm| map.get(&gm).copied().unwrap_or(gm))
@@ -170,7 +174,7 @@ fn main() {
 		.filter_map(|e| {
 			let p = e.path();
 			if p.extension()
-				.map_or(false, |ext| ext.eq_ignore_ascii_case("txt"))
+				.is_some_and(|ext| ext.eq_ignore_ascii_case("txt"))
 			{
 				Some(p)
 			} else {

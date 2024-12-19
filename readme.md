@@ -12,6 +12,7 @@ Trademark and copyright notice: These are 3rd party libraries. This project and 
 - SSD 5
 - Superior Drummer 3
 - Ugritone Drums
+- Getgood Drums - One Kit Wonder: Architects
 
 You can embed your own mappings into the plugin/tool; instructions are given below.
 

@@ -90,3 +90,6 @@ The usage is:
 `drum-mapper remap --from <library> --to <library> --out remapped.mid ./foo.mid`
 
 It has more options, for example using a mapping file instead of embedded libraries for from/to. Run `drum-mapper remap --help` to see them all.
+
+## Issues
+Currently mappings other than General MIDI -> X are lossy; the plugin reverses the mapping while converting between libraries. This is going to be addressed in future versions. For now, it's wise to keep the original MIDI file around in case you want to swap libraries.

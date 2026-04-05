@@ -1,6 +1,6 @@
 [package]
 name = "drum-mapper-cli"
-version = "0.2.1"
+version = "0.5.0"
 edition = "2021"
 authors = ["Taylan Gökkaya"]
 
@@ -10,6 +10,6 @@ path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0.*"
-clap = { version = "4.5.9", features = ["derive"] }
+clap = { version = "4.6.0", features = ["derive"] }
 mappings = { path = "../mappings", features = ["clap"] }
 midly = "0.5.3"

@@ -19,6 +19,6 @@ strip = "debuginfo"
 opt-level = 1
 
 [workspace.dependencies]
-nih_plug = { git = "https://github.com/robbert-vdh/nih-plug", rev = "ffe9b61", features = ["vst3"] }
-nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", rev = "ffe9b61" }
-nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "ffe9b61" }
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug", rev = "28b149ec4d62757d0b448809148a0c3ca6e09a95", features = ["vst3"] }
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", rev = "28b149ec4d62757d0b448809148a0c3ca6e09a95" }
+nih_plug_xtask = { git = "https://github.com/robbert-vdh/nih-plug", rev = "28b149ec4d62757d0b448809148a0c3ca6e09a95" }
